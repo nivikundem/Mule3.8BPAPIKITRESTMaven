@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+   <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+         <!-- XML Schema Generated from XML Document on Tue Nov 15 2016 07:02:43 GMT+0000 (GMT Standard Time) -->
+         <!-- with XmlGrid.net Free Online Service http://xmlgrid.net -->
+         <xs:element name="BPLoadList">
+               <xs:complexType>
+                     <xs:sequence>
+                           <xs:element name="batch" maxOccurs="unbounded">
+                                 <xs:complexType>
+                                       <xs:sequence>
+                                             <xs:element name="TransactionRef" type="xs:string"></xs:element>
+                                             <xs:element name="TransactionType" type="xs:string"></xs:element>
+                                             <xs:element name="TransactionNumber" type="xs:string"></xs:element>
+                                             <xs:element name="FirstName" type="xs:string"></xs:element>
+                                             <xs:element name="LastName" type="xs:string"></xs:element>
+                                             <xs:element name="Amount" type="xs:int"></xs:element>
+                                       </xs:sequence>
+                                 </xs:complexType>
+                           </xs:element>
+                     </xs:sequence>
+               </xs:complexType>
+         </xs:element>
+   </xs:schema>

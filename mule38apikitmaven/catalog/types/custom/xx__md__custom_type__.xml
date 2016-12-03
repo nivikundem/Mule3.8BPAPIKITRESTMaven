@@ -1,0 +1,283 @@
+<custom__type__definition>
+  <version>5.2.0.0</version>
+  <typeName class="org.mule.common.metadata.DefaultMetaDataKey">
+    <id>xx</id>
+    <displayName>xx</displayName>
+    <category>DEFAULT</category>
+    <metaDataKeyPropertiesManager>
+      <properties>
+        <org.mule.common.metadata.key.property.dsql.DsqlFromMetaDataKeyProperty/>
+      </properties>
+    </metaDataKeyPropertiesManager>
+  </typeName>
+  <metadataModel class="org.mule.common.metadata.DefaultXmlMetaDataModel">
+    <dataType>XML</dataType>
+    <metaDataModelPropertiesManager>
+      <properties>
+        <org.mule.common.metadata.property.xml.SchemaTypeMetaDataProperty>
+          <typeQName>
+            <namespaceURI></namespaceURI>
+            <localPart>BPLoadListType</localPart>
+            <prefix></prefix>
+          </typeQName>
+        </org.mule.common.metadata.property.xml.SchemaTypeMetaDataProperty>
+        <org.mule.common.metadata.property.TextBasedExampleMetaDataModelProperty>
+          <exampleContent>C:\Mule37Nov2016\Workspace\Mule38APIKITMaven\src\main\resources\BPLoadList.xml</exampleContent>
+        </org.mule.common.metadata.property.TextBasedExampleMetaDataModelProperty>
+        <org.mule.tooling.metadata.properties.DefinitionEditorModeType>
+          <mode>EXAMPLE</mode>
+          <path>src\main\resources\BPLoadList.xml</path>
+          <rootElement>BPLoadList</rootElement>
+        </org.mule.tooling.metadata.properties.DefinitionEditorModeType>
+      </properties>
+    </metaDataModelPropertiesManager>
+    <fields>
+      <org.mule.common.metadata.DefaultMetaDataField>
+        <name>batch</name>
+        <model class="org.mule.common.metadata.DefaultListMetaDataModel">
+          <dataType>LIST</dataType>
+          <metaDataModelPropertiesManager>
+            <properties>
+              <org.mule.common.metadata.property.xml.SchemaTypeMetaDataProperty>
+                <typeQName>
+                  <namespaceURI></namespaceURI>
+                  <localPart>batchType</localPart>
+                  <prefix></prefix>
+                </typeQName>
+              </org.mule.common.metadata.property.xml.SchemaTypeMetaDataProperty>
+              <org.mule.common.metadata.property.xml.UnboundMetaDataProperty>
+                <maxOccurs>2147483647</maxOccurs>
+                <minOccurs>0</minOccurs>
+              </org.mule.common.metadata.property.xml.UnboundMetaDataProperty>
+            </properties>
+          </metaDataModelPropertiesManager>
+          <model class="org.mule.common.metadata.DefaultXmlMetaDataModel">
+            <dataType>XML</dataType>
+            <metaDataModelPropertiesManager>
+              <properties/>
+            </metaDataModelPropertiesManager>
+            <fields>
+              <org.mule.common.metadata.DefaultMetaDataField>
+                <name>TransactionRef</name>
+                <model class="org.mule.common.metadata.DefaultSimpleMetaDataModel">
+                  <dataType>STRING</dataType>
+                  <metaDataModelPropertiesManager>
+                    <properties/>
+                  </metaDataModelPropertiesManager>
+                </model>
+                <accessType>READ_WRITE</accessType>
+                <metaDataFieldPropertyManager>
+                  <properties>
+                    <org.mule.common.metadata.property.QNameMetaDataProperty>
+                      <name>
+                        <namespaceURI></namespaceURI>
+                        <localPart>TransactionRef</localPart>
+                        <prefix></prefix>
+                      </name>
+                    </org.mule.common.metadata.property.QNameMetaDataProperty>
+                  </properties>
+                </metaDataFieldPropertyManager>
+              </org.mule.common.metadata.DefaultMetaDataField>
+              <org.mule.common.metadata.DefaultMetaDataField>
+                <name>TransactionType</name>
+                <model class="org.mule.common.metadata.DefaultSimpleMetaDataModel">
+                  <dataType>STRING</dataType>
+                  <metaDataModelPropertiesManager>
+                    <properties/>
+                  </metaDataModelPropertiesManager>
+                </model>
+                <accessType>READ_WRITE</accessType>
+                <metaDataFieldPropertyManager>
+                  <properties>
+                    <org.mule.common.metadata.property.QNameMetaDataProperty>
+                      <name>
+                        <namespaceURI></namespaceURI>
+                        <localPart>TransactionType</localPart>
+                        <prefix></prefix>
+                      </name>
+                    </org.mule.common.metadata.property.QNameMetaDataProperty>
+                  </properties>
+                </metaDataFieldPropertyManager>
+              </org.mule.common.metadata.DefaultMetaDataField>
+              <org.mule.common.metadata.DefaultMetaDataField>
+                <name>TransactionNumber</name>
+                <model class="org.mule.common.metadata.DefaultSimpleMetaDataModel">
+                  <dataType>STRING</dataType>
+                  <metaDataModelPropertiesManager>
+                    <properties>
+                      <org.mule.common.metadata.property.xml.SchemaTypeMetaDataProperty>
+                        <typeQName>
+                          <namespaceURI>http://www.w3.org/2001/XMLSchema</namespaceURI>
+                          <localPart>string</localPart>
+                          <prefix></prefix>
+                        </typeQName>
+                      </org.mule.common.metadata.property.xml.SchemaTypeMetaDataProperty>
+                    </properties>
+                  </metaDataModelPropertiesManager>
+                </model>
+                <accessType>READ_WRITE</accessType>
+                <metaDataFieldPropertyManager>
+                  <properties>
+                    <org.mule.common.metadata.property.QNameMetaDataProperty>
+                      <name>
+                        <namespaceURI></namespaceURI>
+                        <localPart>TransactionNumber</localPart>
+                        <prefix></prefix>
+                      </name>
+                    </org.mule.common.metadata.property.QNameMetaDataProperty>
+                  </properties>
+                </metaDataFieldPropertyManager>
+              </org.mule.common.metadata.DefaultMetaDataField>
+              <org.mule.common.metadata.DefaultMetaDataField>
+                <name>FirstName</name>
+                <model class="org.mule.common.metadata.DefaultSimpleMetaDataModel">
+                  <dataType>STRING</dataType>
+                  <metaDataModelPropertiesManager>
+                    <properties>
+                      <org.mule.common.metadata.property.xml.SchemaTypeMetaDataProperty>
+                        <typeQName reference="../../../../../../org.mule.common.metadata.DefaultMetaDataField[3]/model/metaDataModelPropertiesManager/properties/org.mule.common.metadata.property.xml.SchemaTypeMetaDataProperty/typeQName"/>
+                      </org.mule.common.metadata.property.xml.SchemaTypeMetaDataProperty>
+                    </properties>
+                  </metaDataModelPropertiesManager>
+                </model>
+                <accessType>READ_WRITE</accessType>
+                <metaDataFieldPropertyManager>
+                  <properties>
+                    <org.mule.common.metadata.property.QNameMetaDataProperty>
+                      <name>
+                        <namespaceURI></namespaceURI>
+                        <localPart>FirstName</localPart>
+                        <prefix></prefix>
+                      </name>
+                    </org.mule.common.metadata.property.QNameMetaDataProperty>
+                  </properties>
+                </metaDataFieldPropertyManager>
+              </org.mule.common.metadata.DefaultMetaDataField>
+              <org.mule.common.metadata.DefaultMetaDataField>
+                <name>LastName</name>
+                <model class="org.mule.common.metadata.DefaultSimpleMetaDataModel">
+                  <dataType>STRING</dataType>
+                  <metaDataModelPropertiesManager>
+                    <properties/>
+                  </metaDataModelPropertiesManager>
+                </model>
+                <accessType>READ_WRITE</accessType>
+                <metaDataFieldPropertyManager>
+                  <properties>
+                    <org.mule.common.metadata.property.QNameMetaDataProperty>
+                      <name>
+                        <namespaceURI></namespaceURI>
+                        <localPart>LastName</localPart>
+                        <prefix></prefix>
+                      </name>
+                    </org.mule.common.metadata.property.QNameMetaDataProperty>
+                  </properties>
+                </metaDataFieldPropertyManager>
+              </org.mule.common.metadata.DefaultMetaDataField>
+              <org.mule.common.metadata.DefaultMetaDataField>
+                <name>Amount</name>
+                <model class="org.mule.common.metadata.DefaultSimpleMetaDataModel">
+                  <dataType>DOUBLE</dataType>
+                  <metaDataModelPropertiesManager>
+                    <properties>
+                      <org.mule.common.metadata.property.xml.SchemaTypeMetaDataProperty>
+                        <typeQName>
+                          <namespaceURI>http://www.w3.org/2001/XMLSchema</namespaceURI>
+                          <localPart>float</localPart>
+                          <prefix></prefix>
+                        </typeQName>
+                      </org.mule.common.metadata.property.xml.SchemaTypeMetaDataProperty>
+                    </properties>
+                  </metaDataModelPropertiesManager>
+                </model>
+                <accessType>READ_WRITE</accessType>
+                <metaDataFieldPropertyManager>
+                  <properties>
+                    <org.mule.common.metadata.property.QNameMetaDataProperty>
+                      <name>
+                        <namespaceURI></namespaceURI>
+                        <localPart>Amount</localPart>
+                        <prefix></prefix>
+                      </name>
+                    </org.mule.common.metadata.property.QNameMetaDataProperty>
+                  </properties>
+                </metaDataFieldPropertyManager>
+              </org.mule.common.metadata.DefaultMetaDataField>
+            </fields>
+            <rootElement>
+              <namespaceURI></namespaceURI>
+              <localPart>BPLoadList</localPart>
+              <prefix></prefix>
+            </rootElement>
+            <schemas class="org.mule.common.metadata.StringBasedSchemaProvider">
+              <schemas>
+                <string>&lt;xs:schema attributeFormDefault=&quot;unqualified&quot; elementFormDefault=&quot;qualified&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;&#xd;
+  &lt;xs:element name=&quot;BPLoadList&quot; type=&quot;BPLoadListType&quot;/&gt;&#xd;
+  &lt;xs:complexType name=&quot;batchType&quot;&gt;&#xd;
+    &lt;xs:sequence&gt;&#xd;
+      &lt;xs:element name=&quot;TransactionRef&quot;&gt;&#xd;
+        &lt;xs:simpleType&gt;&#xd;
+          &lt;xs:restriction base=&quot;xs:string&quot;&gt;&#xd;
+            &lt;xs:enumeration value=&quot;TR1&quot;/&gt;&#xd;
+            &lt;xs:enumeration value=&quot;TR2&quot;/&gt;&#xd;
+          &lt;/xs:restriction&gt;&#xd;
+        &lt;/xs:simpleType&gt;&#xd;
+      &lt;/xs:element&gt;&#xd;
+      &lt;xs:element name=&quot;TransactionType&quot;&gt;&#xd;
+        &lt;xs:simpleType&gt;&#xd;
+          &lt;xs:restriction base=&quot;xs:string&quot;&gt;&#xd;
+            &lt;xs:enumeration value=&quot;Queue&quot;/&gt;&#xd;
+            &lt;xs:enumeration value=&quot;zz&quot;/&gt;&#xd;
+          &lt;/xs:restriction&gt;&#xd;
+        &lt;/xs:simpleType&gt;&#xd;
+      &lt;/xs:element&gt;&#xd;
+      &lt;xs:element type=&quot;xs:string&quot; name=&quot;TransactionNumber&quot;/&gt;&#xd;
+      &lt;xs:element type=&quot;xs:string&quot; name=&quot;FirstName&quot;/&gt;&#xd;
+      &lt;xs:element name=&quot;LastName&quot;&gt;&#xd;
+        &lt;xs:simpleType&gt;&#xd;
+          &lt;xs:restriction base=&quot;xs:string&quot;&gt;&#xd;
+            &lt;xs:enumeration value=&quot;K1&quot;/&gt;&#xd;
+            &lt;xs:enumeration value=&quot;ss&quot;/&gt;&#xd;
+          &lt;/xs:restriction&gt;&#xd;
+        &lt;/xs:simpleType&gt;&#xd;
+      &lt;/xs:element&gt;&#xd;
+      &lt;xs:element type=&quot;xs:float&quot; name=&quot;Amount&quot;/&gt;&#xd;
+    &lt;/xs:sequence&gt;&#xd;
+  &lt;/xs:complexType&gt;&#xd;
+  &lt;xs:complexType name=&quot;BPLoadListType&quot;&gt;&#xd;
+    &lt;xs:sequence&gt;&#xd;
+      &lt;xs:element type=&quot;batchType&quot; name=&quot;batch&quot; maxOccurs=&quot;unbounded&quot; minOccurs=&quot;0&quot;/&gt;&#xd;
+    &lt;/xs:sequence&gt;&#xd;
+  &lt;/xs:complexType&gt;&#xd;
+&lt;/xs:schema&gt;</string>
+              </schemas>
+              <encoding>UTF-8</encoding>
+            </schemas>
+            <namespaceManager>
+              <namespacePrefix/>
+            </namespaceManager>
+          </model>
+          <isArray>false</isArray>
+        </model>
+        <accessType>READ_WRITE</accessType>
+        <metaDataFieldPropertyManager>
+          <properties>
+            <org.mule.common.metadata.property.QNameMetaDataProperty>
+              <name>
+                <namespaceURI></namespaceURI>
+                <localPart>batch</localPart>
+                <prefix></prefix>
+              </name>
+            </org.mule.common.metadata.property.QNameMetaDataProperty>
+          </properties>
+        </metaDataFieldPropertyManager>
+      </org.mule.common.metadata.DefaultMetaDataField>
+    </fields>
+    <rootElement reference="../fields/org.mule.common.metadata.DefaultMetaDataField/model/model/rootElement"/>
+    <schemas class="org.mule.common.metadata.StringBasedSchemaProvider">
+      <schemas reference="../../fields/org.mule.common.metadata.DefaultMetaDataField/model/model/schemas/schemas"/>
+      <encoding reference="../../fields/org.mule.common.metadata.DefaultMetaDataField/model/model/schemas/encoding"/>
+    </schemas>
+    <namespaceManager reference="../fields/org.mule.common.metadata.DefaultMetaDataField/model/model/namespaceManager"/>
+  </metadataModel>
+</custom__type__definition>

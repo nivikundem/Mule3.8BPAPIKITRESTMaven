@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:vm="http://www.mulesoft.org/schema/mule/vm"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
+    <http:listener-config name="bp-httpListenerConfig" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration"/>
+    <apikit:config name="bp-config" raml="bp.raml" consoleEnabled="false" doc:name="Router"/>
+        
+    <flow name="bp-main">
+        <http:listener config-ref="bp-httpListenerConfig" path="/api/*" doc:name="HTTP"/>
+        <apikit:router config-ref="bp-config" doc:name="APIkit Router"/>
+        <exception-strategy ref="bp-apiKitGlobalExceptionMapping" doc:name="Reference Exception Strategy"/>
+    </flow>
+    <flow name="bp-console">
+        <http:listener config-ref="bp-httpListenerConfig" path="/console/*" doc:name="HTTP"/>
+        <apikit:console config-ref="bp-config" doc:name="APIkit Console"/>
+    </flow>
+    
+    
+    
+    <flow name="get:/bp/{TransactionRef}/Delete:bp-config">
+		<!--     <set-payload value="{&#xA; &quot;transaction&quot;: {&#xA;  &quot;TransactionRef&quot;: &quot;TR5&quot;,&#xA;  &quot;TransactionType&quot;: &quot;Queue&quot;,&#xA;  &quot;TransactionNumber&quot;: &quot;TN5&quot;,&#xA;  &quot;FirstName&quot;: &quot;N5&quot;,&#xA;  &quot;LastName&quot;: &quot;K5&quot;,&#xA;  &quot;Amount&quot;: &quot;114.0&quot;&#xA;  }&#xA;}" doc:name="Set Payload"/>
+		-->
+
+		<db:select config-ref="ESBDBDatabase" doc:name="Get if any to do" target="payload">
+		<db:parameterized-query><![CDATA[SELECT Message
+		FROM BP.bptransactions 
+		where transactionRef = #[flowVars.TransactionRef]
+		limit 1
+		]]></db:parameterized-query>
+		</db:select>
+		<expression-filter expression="#[payload.size()&gt;0]" doc:name="GetAllOnly if rows"/>      
+
+		<message-properties-transformer scope="invocation" doc:name="Flow Variables">			
+		<add-message-property key="TransactionRef" value="#[xpath3('string(//batch/TransactionRef)',payload[0].Message)]"/>						
+		<add-message-property key="TransactionType" value="#[xpath3('string(//batch/TransactionType)',payload[0].Message)]"/>			
+		<add-message-property key="TransactionNumber" value="#[xpath3('string(//batch/TransactionNumber)',payload[0].Message)]"/>			
+		<add-message-property key="FirstName" value="#[xpath3('string(//batch/FirstName)',payload[0].Message)]"/>			
+		<add-message-property key="LastName" value="#[xpath3('string(//batch/LastName)',payload[0].Message)]"/>					
+		<add-message-property key="Amount" value="#[xpath3('string(//batch/Amount)',payload[0].Message)]"/>					
+		</message-properties-transformer>
+
+
+		<db:delete config-ref="ESBDBDatabase" doc:name="Delete records">
+		<db:parameterized-query><![CDATA[DELETE
+		FROM BP.bptransactions
+		WHERE transactionRef=#[flowVars.TransactionRef]]]></db:parameterized-query>
+		</db:delete>
+		<dw:transform-message doc:name="SessionVarsToJSON" metadata:id="1b3414fc-0e51-4df5-b913-aa03e2aecf1d">
+		<dw:input-variable mimeType="application/java" variableName="FirstName"/>
+		<dw:input-variable mimeType="application/java" variableName="TransactionNumber"/>
+		<dw:input-variable mimeType="application/java" variableName="TransactionType"/>
+		<dw:input-variable mimeType="application/java" variableName="LastName"/>
+		<dw:input-variable mimeType="application/java" variableName="TransactionRef"/>
+		<dw:input-variable mimeType="application/java" variableName="Amount"/>
+		<dw:set-payload><![CDATA[%dw 1.0
+		%output application/json
+		---
+		{
+		transaction: {
+		TransactionRef: flowVars.TransactionRef,
+		TransactionType: flowVars.TransactionType,
+		TransactionNumber: flowVars.TransactionNumber,
+		FirstName: flowVars.FirstName,
+		LastName: flowVars.LastName,
+		Amount: flowVars.Amount
+		}
+		}]]></dw:set-payload>
+		</dw:transform-message>
+
+		<catch-exception-strategy doc:name="BPAPI_Delete Catch Exception Strategy">
+		<message-properties-transformer scope="session" doc:name="Message Properties"> 
+		<add-message-property key="errorprocess" value="#['BPAPI']"></add-message-property>  
+		<add-message-property key="errormessage" value="#['Delete API']"></add-message-property>  
+		<add-message-property key="erroradditionaltext" value="#[exception.cause.message]"></add-message-property> 
+		</message-properties-transformer>  
+		<vm:outbound-endpoint exchange-pattern="request-response" path="BPAPI.queue.VMError" doc:name="VMError"></vm:outbound-endpoint>  		
+		</catch-exception-strategy>  
+			    
+    </flow>
+	
+	
+	
+    <flow name="get:/GetAll:bp-config">
+		<!--  <set-payload value="{&#xA;    &quot;BPLoadList&quot;: {     &#xA;      &quot;transaction&quot;: {&#xA;      &quot;TransactionRef&quot;: &quot;TR5&quot;,&#xA;      &quot;TransactionType&quot;: &quot;Queue&quot;,&#xA;      &quot;TransactionNumber&quot;: &quot;TN5&quot;,&#xA;      &quot;FirstName&quot;: &quot;N5&quot;,&#xA;      &quot;LastName&quot;: &quot;K5&quot;,&#xA;      &quot;Amount&quot;: &quot;114.0&quot;&#x9;&#x9;&#x9;           &#xA;          }  ,&#xA;      &quot;transaction&quot;: {&#xA;      &quot;TransactionRef&quot;: &quot;TR5&quot;,&#xA;      &quot;TransactionType&quot;: &quot;Queue&quot;,&#xA;      &quot;TransactionNumber&quot;: &quot;TN5&quot;,&#xA;      &quot;FirstName&quot;: &quot;N5&quot;,&#xA;      &quot;LastName&quot;: &quot;K5&quot;,&#xA;      &quot;Amount&quot;: &quot;114.0&quot;&#x9;&#x9;&#x9;&#x9;           &#xA;          }                                          &#xA;           }          &#xA;     }" doc:name="Set Payload"/>-->
+
+		<message-properties-transformer scope="session" doc:name="Session Variables">			
+		<add-message-property key="xmlList" value="#[new ArrayList()]"/>			
+		</message-properties-transformer>
+
+		<enricher target="#[sessionVars.xmlList]" doc:name="Message Enricher"> 
+		<db:select config-ref="ESBDBDatabase" doc:name="Get Records">
+		<db:parameterized-query><![CDATA[SELECT Message
+		FROM bp.bptransactions limit 2]]></db:parameterized-query>
+		</db:select>
+		</enricher> 
+
+		<expression-filter expression="#[sessionVars.xmlList !=[]]" doc:name="Only XmLList exists"/>              
+		<component class="com.bpapi.component.BuildJAXB" doc:name="JavaEnricher"/>
+		<dw:transform-message metadata:id="a3fbd289-40cf-41a2-8d6d-4806d776b8aa" doc:name="JavaToJSON">
+		<dw:input-payload doc:sample="sample_data\list_Batch_1.dwl" mimeType="application/java"/>
+		<dw:set-payload><![CDATA[%dw 1.0
+		%input payload application/java
+		%output application/json
+		---
+
+		{
+		"BPLoadList": {  (payload map {
+		"transaction": {
+
+		"TransactionRef":  $.transactionRef,
+		"TransactionType" : $.transactionType,
+		"TransactionNumber": $.transactionNumber,
+		"FirstName": $.firstName,
+		"LastName": $.lastName,
+		"Amount": $.amount
+
+		}
+
+		})	
+		}
+
+		}]]></dw:set-payload>
+		</dw:transform-message>
+
+		<catch-exception-strategy doc:name="BPAPI_GetOne Catch Exception Strategy">
+		<message-properties-transformer scope="session" doc:name="Message Properties"> 
+		<add-message-property key="errorprocess" value="#['BPAPI']"></add-message-property>  
+		<add-message-property key="errormessage" value="#['GetAll']"></add-message-property>  
+		<add-message-property key="erroradditionaltext" value="#[exception.cause.message]"></add-message-property> 
+		</message-properties-transformer>  
+		<vm:outbound-endpoint exchange-pattern="request-response" path="BPAPI.queue.VMError" doc:name="VMError"></vm:outbound-endpoint>  		
+		</catch-exception-strategy>    
+
+    </flow>
+        
+    
+    <flow name="get:/bp/{TransactionRef}/bpDetails:bp-config">
+    
+
+		<db:select config-ref="ESBDBDatabase" doc:name="Get if any to do" target="payload">
+		<db:parameterized-query><![CDATA[SELECT Message
+		FROM BP.bptransactions 
+		where transactionRef = #[flowVars.TransactionRef]
+		limit 1
+		]]></db:parameterized-query>
+		</db:select>
+
+
+		<!--   
+		<set-payload value="{&#xA; &quot;transaction&quot;: {&#xA;  &quot;TransactionRef&quot;: &quot;TR5&quot;,&#xA;  &quot;TransactionType&quot;: &quot;Queue&quot;,&#xA;  &quot;TransactionNumber&quot;: &quot;TN5&quot;,&#xA;  &quot;FirstName&quot;: &quot;N5&quot;,&#xA;  &quot;LastName&quot;: &quot;K5&quot;,&#xA;  &quot;Amount&quot;: &quot;114.0&quot;&#xA;} &#xA;}" doc:name="Set Payload"/>
+
+		-->
+		<expression-filter expression="#[payload.size()&gt;0]" doc:name="GetAllOnly if rows"/>          
+		<set-payload value="#[payload[0].Message]" doc:name="Set Payload" mimeType="application/xml"/>
+		<dw:transform-message metadata:id="00b881c4-ca52-4ab4-9111-9c8ff5d05d91" doc:name="GetXMLToJSON">
+		<dw:input-payload doc:sample="GetInput.xml" mimeType="application/xml"/>
+		<dw:set-payload><![CDATA[%dw 1.0
+		%output application/json
+		---
+		{
+		transaction: {
+		TransactionRef: payload.batch.TransactionRef,
+		TransactionType: payload.batch.TransactionType,
+		TransactionNumber: payload.batch.TransactionNumber,
+		FirstName: payload.batch.FirstName,
+		LastName: payload.batch.LastName,
+		Amount: payload.batch.Amount as :string
+		}
+		}]]></dw:set-payload>
+		</dw:transform-message>   
+
+		<catch-exception-strategy doc:name="BPAPI_GetOne Catch Exception Strategy">
+		<message-properties-transformer scope="session" doc:name="Message Properties"> 
+		<add-message-property key="errorprocess" value="#['BPAPI']"></add-message-property>  
+		<add-message-property key="errormessage" value="#['GetOne']"></add-message-property>  
+		<add-message-property key="erroradditionaltext" value="#[exception.cause.message]"></add-message-property> 
+		</message-properties-transformer>  
+		<vm:outbound-endpoint exchange-pattern="request-response" path="BPAPI.queue.VMError" doc:name="VMError"></vm:outbound-endpoint>  		
+		</catch-exception-strategy> 
+   
+    </flow>
+    
+    
+    
+    <flow name="post:/postOperation:bp-config">
+		<!--    <set-payload value="{&#xA; &quot;transaction&quot;: {&#xA;  &quot;TransactionRef&quot;: &quot;TR5&quot;,&#xA;  &quot;TransactionType&quot;: &quot;Queue&quot;,&#xA;  &quot;TransactionNumber&quot;: &quot;TN5&quot;,&#xA;  &quot;FirstName&quot;: &quot;N5&quot;,&#xA;  &quot;LastName&quot;: &quot;K5&quot;,&#xA;  &quot;Amount&quot;: &quot;114.0&quot;&#xA;  }&#xA;}" doc:name="Set Payload"/>
+		-->
+
+
+		<db:insert config-ref="ESBDBDatabase" doc:name="InsertVBR">
+		<db:parameterized-query><![CDATA[Insert into  bp.transaction (transactionRef,transactionType,Amount)
+		Values( #[message.inboundProperties.'http.query.params'.TransactionRef], #[message.inboundProperties.'http.query.params'.TransactionType], #[message.inboundProperties.'http.query.params'.Amount])]]></db:parameterized-query>
+		</db:insert>
+		<dw:transform-message doc:name="QueryParamToJSON">
+		<dw:set-payload><![CDATA[%dw 1.0
+		%output application/json
+		---
+		{
+		transaction: {
+		TransactionRef: inboundProperties."http.query.params".TransactionRef,
+		TransactionType: inboundProperties."http.query.params".TransactionType,
+		TransactionNumber: inboundProperties."http.query.params".Amount
+		}
+		}]]></dw:set-payload>
+		</dw:transform-message>
+
+		<catch-exception-strategy doc:name="BPAPI_Delete Catch Exception Strategy">
+		<message-properties-transformer scope="session" doc:name="Message Properties"> 
+		<add-message-property key="errorprocess" value="#['BPAPI']"></add-message-property>  
+		<add-message-property key="errormessage" value="#['POST API']"></add-message-property>  
+		<add-message-property key="erroradditionaltext" value="#[exception.cause.message]"></add-message-property> 
+		</message-properties-transformer>  
+		<vm:outbound-endpoint exchange-pattern="request-response" path="BPAPI.queue.VMError" doc:name="VMError"></vm:outbound-endpoint>  		
+		</catch-exception-strategy>  
+    </flow>
+    
+    
+    
+    <apikit:mapping-exception-strategy name="bp-apiKitGlobalExceptionMapping">
+        <apikit:mapping statusCode="404">
+            <apikit:exception value="org.mule.module.apikit.exception.NotFoundException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Resource not found&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+        <apikit:mapping statusCode="405">
+            <apikit:exception value="org.mule.module.apikit.exception.MethodNotAllowedException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Method not allowed&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+        <apikit:mapping statusCode="415">
+            <apikit:exception value="org.mule.module.apikit.exception.UnsupportedMediaTypeException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Unsupported media type&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+        <apikit:mapping statusCode="406">
+            <apikit:exception value="org.mule.module.apikit.exception.NotAcceptableException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Not acceptable&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+        <apikit:mapping statusCode="400">
+            <apikit:exception value="org.mule.module.apikit.exception.BadRequestException" />
+            <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
+            <set-payload value="{ &quot;message&quot;: &quot;Bad request&quot; }" doc:name="Set Payload"/>
+        </apikit:mapping>
+    </apikit:mapping-exception-strategy>
+</mule>

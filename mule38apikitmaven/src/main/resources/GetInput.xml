@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<batch>
+  <TransactionRef>TR1</TransactionRef>
+  <TransactionType>Queue</TransactionType>
+  <TransactionNumber>TN1</TransactionNumber>
+  <FirstName>N1</FirstName>
+  <LastName>K1</LastName>
+  <Amount>110.0</Amount>
+</batch>

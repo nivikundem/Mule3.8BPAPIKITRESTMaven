@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<batch xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="Batch.xsd">
+  <TransactionRef>TransactionRef</TransactionRef>
+  <TransactionType>TransactionType</TransactionType>
+  <TransactionNumber>TransactionNumber</TransactionNumber>
+  <FirstName>FirstName</FirstName>
+  <LastName>LastName</LastName>
+  <Amount>0</Amount>
+</batch>

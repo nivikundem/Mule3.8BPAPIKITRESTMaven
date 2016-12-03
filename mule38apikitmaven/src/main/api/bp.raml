@@ -1,0 +1,133 @@
+#%RAML 0.8
+title: BPAPI
+version: 1.0
+#baseUri: http://www.bp.com/api
+baseUri: https://mocksvc.mulesoft.com/mocks/1b6163e6-996b-43cb-9990-fce8079646b1/api
+#baseUri: http://mocksvc.mulesoft.com/mocks/bb578fe5-6f4c-43e4-a2eb-6d50f0fada46/api
+#baseUri: http://mocksvc.mulesoft.com/mocks/2ecc2442-e190-4b0a-8167-5b2557921c58/mocks/bb578fe5-6f4c-43e4-a2eb-6d50f0fada46/api
+/GetAll:
+  displayName: GetAll
+  get:
+    description: Gets a list of all the transaction details
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                  "BPLoadList": {     
+                    "transaction": {
+                    "TransactionRef": "TR5",
+                    "TransactionType": "Queue",
+                    "TransactionNumber": "TN5",
+                    "FirstName": "N5",
+                    "LastName": "K5",
+                    "Amount": "114.0"			           
+                        }  ,
+                    "transaction": {
+                    "TransactionRef": "TR5",
+                    "TransactionType": "Queue",
+                    "TransactionNumber": "TN5",
+                    "FirstName": "N5",
+                    "LastName": "K5",
+                    "Amount": "114.0"				           
+                        }                                          
+                         }          
+                   }		   
+/bp:
+  displayName: bp  
+  /{TransactionRef}/bpDetails:
+    displayName: bpDetails
+    get:
+      description: Get the transaction reference details of an existing transaction
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                 "transaction": {
+                  "TransactionRef": "TR5",
+                  "TransactionType": "Queue",
+                  "TransactionNumber": "TN5",
+                  "FirstName": "N5",
+                  "LastName": "K5",
+                  "Amount": "114.0"
+                } 
+                } 
+        400:
+          body:
+            application/json:
+              example: |
+                {
+                  "message": "The transaction reference does not exist"
+                }
+  /{TransactionRef}/Delete:
+    displayName: Delete
+    get:
+      description: Delete the details and sends the status message
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                 "transaction": {
+                  "TransactionRef": "TR5",
+                  "TransactionType": "Queue",
+                  "TransactionNumber": "TN5",
+                  "FirstName": "N5",
+                  "LastName": "K5",
+                  "Amount": "114.0"
+                  }
+                }
+        400:
+          body:
+            application/json:
+              example: |
+                {
+                  "message": "The transaction  reference does not exist"
+                }  
+                         
+/postOperation:
+  displayName: postOperation
+  post:
+    description: insert single transaction details
+    queryParameters: 
+      TransactionRef : 
+        displayName: TransactionRef
+        type: string
+        example: 200
+        required: true 
+      TransactionType : 
+        displayName: TransactionType
+        type: string
+        example: A200
+        required: true       
+      Amount : 
+        displayName: Amount
+        type: string
+        example: 5000.00
+        required: true           
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+               "transaction": {
+                "TransactionRef": "TR5",
+                "TransactionType": "Queue",
+                "TransactionNumber": "TN5",
+                "FirstName": "N5",
+                "LastName": "K5",
+                "Amount": "114.0"
+                }
+              }  				             
+      500:
+        body:
+          application/json:
+            example: |
+              {
+                "errorMessage": "The transaction details couldn't be entered."
+              }

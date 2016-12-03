@@ -1,0 +1,33 @@
+{
+    "inputMessageMetadata": {
+        "flowVariables": {
+            "Amount": {
+                "connectorName": "#_custom_mule_metadata_type_#",
+                "typeId": "String"
+            },
+            "TransactionRef": {
+                "connectorName": "#_custom_mule_metadata_type_#",
+                "typeId": "String"
+            },
+            "FirstName": {
+                "connectorName": "#_custom_mule_metadata_type_#",
+                "typeId": "String"
+            },
+            "TransactionNumber": {
+                "connectorName": "#_custom_mule_metadata_type_#",
+                "typeId": "String"
+            },
+            "TransactionType": {
+                "connectorName": "#_custom_mule_metadata_type_#",
+                "typeId": "String"
+            },
+            "LastName": {
+                "connectorName": "#_custom_mule_metadata_type_#",
+                "typeId": "String"
+            }
+        }
+    },
+    "outputMessageMetadata": {},
+    "id": "1b3414fc-0e51-4df5-b913-aa03e2aecf1d",
+    "version": "5.2.0.0"
+}

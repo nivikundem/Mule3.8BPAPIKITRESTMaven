@@ -1,0 +1,23 @@
+/BPAPI.properties
+/BPAPI1REST.xml
+/BPAPI88Global.xml
+/BPAPI99ErrorInsertVM.xml
+/BPLoadList.xml
+/BPLoadList.xsd
+/BPSPort.wsdl
+/BPScripts.sql
+/Batch.xml
+/Batch.xsd
+/ESBData.properties
+/Email.properties
+/General.properties
+/Get.json
+/GetInput.xml
+/GitHub Guide.pdf
+/MULE38BPAPILITMAVEN.docx
+/ReadMeMule38APIKITRESTMaven.txt
+/bp.raml
+/com/
+/log4j2.xml
+/mule-app.properties
+/mule-deploy.properties
